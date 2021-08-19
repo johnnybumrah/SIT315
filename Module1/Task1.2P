@@ -1,0 +1,41 @@
+const uint8_t pinTemp = A2;   // set pin to A2
+const uint8_t BTN_PIN = 2;
+const uint8_t LED_PIN = 8;
+volatile float temperatureC=0;
+//declare state variable
+uint8_t buttonState = 0;
+
+void setup() {
+  //set the button mode
+  pinMode(BTN_PIN, INPUT_PULLUP);
+ 
+  pinMode(LED_PIN, OUTPUT); // set pinmode
+  Serial.begin(9600);
+  attachInterrupt(0, pin_ISR, CHANGE);
+
+}
+void loop() 
+{
+  float temp = analogRead(pinTemp);    //Read the analog pin
+  float voltage = temp * 5.0;
+  voltage /= 1024.0; 
+  temperatureC = (voltage - 0.5) * 100; // converts temperature into celsius
+}
+
+void pin_ISR()
+{
+  buttonState = digitalRead(BTN_PIN);
+  if(temperatureC>20)
+  {
+    digitalWrite(LED_PIN, buttonState);
+    Serial.print("Temperature HIGH:");
+    Serial.println(temperatureC); 
+  }
+  else
+  { 
+     digitalWrite(LED_PIN, LOW);
+     Serial.print("Temperature LOW:");
+     Serial.println(temperatureC);   
+  }
+ }   
+ 
