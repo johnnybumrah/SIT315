@@ -1,0 +1,24 @@
+float pinTemp = A2;   // set pin to A2
+
+void setup() {
+  pinMode(2, OUTPUT); // set pinmode
+  Serial.begin(9600);
+  
+}
+void loop() {
+  float temp = analogRead(pinTemp);    //Read the analog pin
+  float voltage = temp * 5.0;
+  voltage /= 1024.0; 
+ 
+  float temperatureC = (voltage - 0.5) * 100; // converts temperature into celsius
+ 
+  Serial.print(temperatureC); 
+  Serial.println(" degrees C");
+  
+  if(temperatureC>20){
+    
+    digitalWrite(2, HIGH);          // LED on 
+    Serial.println(" It's normal.");
+  }
+  delay(2000);  
+}
