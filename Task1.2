@@ -1,0 +1,25 @@
+int led = 13;            //the pin that the LED is atteched to
+int sensor = 2;          // the pin that the sensor is atteched to
+int value = 0;           // variable to store the sensor status (value)
+
+
+void setup() {
+  Serial.begin(9600);   // initialize serial
+  pinMode(led,OUTPUT);  // initalize LED as an output
+  attachInterrupt(digitalPinToInterrupt(sensor),interrupt_routine,RISING);
+}
+
+void loop() {
+  value = digitalRead(sensor);   // read sensor value
+  if (value==HIGH){              // check if the sensor is HIGH
+    digitalWrite(led,HIGH);      // turn LED ON
+    delay(2000);                 // delay for 2 seconds
+    value = LOW;                 
+    digitalWrite(led,LOW);       // turn the LED off
+  }
+}
+  
+void interrupt_routine(){
+  value = HIGH;                    
+  Serial.println("Motion Detected");
+}
